@@ -24,3 +24,19 @@ def add_discounts():
     discounts_json = parse(discounts)
 
     return jsonify(discounts_json)
+
+
+def serialize_promotion(promotion):
+    """
+    Turns a Promotion object into a dict for jsonification
+    """
+    return {
+        'id': promotion.id,
+        'product_id': promotion.product_id,
+        'product_name': promotion.product_name,
+        'product_description': promotion.product_description,
+        'price': promotion.price,
+        'discount': promotion.discount,
+        'final_price': round(promotion.price * (1 - promotion.discount), 2),
+        'shipping_discount': promotion.shipping_discount,
+    }
