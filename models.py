@@ -5,6 +5,25 @@ from exceptions import NotFoundError
 
 db = SQLAlchemy(app)
 
+class User(db.Model):
+    """
+    Skeleton User model
+    """
+    id = db.Column(db.Integer, primary_key=True)
+
+    @classmethod
+    def get_dummy(cls):
+        """
+        Returns a Dummy User for use in tests
+        """
+        user = cls.query.get(0)
+        if user is None:
+            user = User(id=0)
+            db.session.add(user)
+            db.commit()
+        return user
+
+
 class Product(db.Model):
     """
     Skeleton Product model to be used in the Promotion relation
