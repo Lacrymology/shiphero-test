@@ -6,6 +6,9 @@ from .exceptions import NotFoundError
 db = SQLAlchemy(app)
 
 class Product(db.Model):
+    """
+    Skeleton Product model to be used in the Promotion relation
+    """
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String(128), nullable=False)
@@ -31,7 +34,7 @@ class Promotion(db.Model):
     shipping_discount = db.Column(db.Float, nullable=False)
 
     @classmethod
-    def from_json(promotion_json, create_products=False):
+    def from_json(cls, promotion_json, create_products=False):
         product_ids = set(map(lambda prom: prom.get('product_id'),
                               promotion_json))
         products = {
