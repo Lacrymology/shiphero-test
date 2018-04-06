@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
-from app import app
+from .app import app
+from .exceptions import NotFoundError
 
 db = SQLAlchemy(app)
 
@@ -28,3 +29,19 @@ class Promotion(db.Model):
 
     discount = db.Column(db.Float, nullable=False)
     shipping_discount = db.Column(db.Float, nullable=False)
+
+    @classmethod
+    def from_json(promotion_json, create_products=False):
+        product_ids = set(map(lambda prom: prom.get('product_id'),
+                              promotion_json))
+        products = {
+            p.id: p
+            for p in Product.query.filter(Product.id.in_(product_ids))
+        }
+
+        for promotion in promotion_json:
+            product = products.get(promotion['product_id'])
+            if not product:
+                if not create_products:
+                    raise NotFoundError('Product {} not found'.format(
+                        promotion['product_id']))
