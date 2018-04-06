@@ -4,6 +4,7 @@ from exceptions import HttpError
 from app import app
 from inputs import parse
 from models import Product, Promotion
+from utils import authenticate
 
 # NOTE: generally, I'd rather lean towards using class-based views rather than
 #  functions, and since I'm designing this as a REST API, I'd have some helpers
@@ -11,6 +12,7 @@ from models import Product, Promotion
 #  also define a set of Exception subclasses to be handled as HTTP error
 #  status responses
 
+@authenticate
 @app.route('/discounts/add', methods=['POST'])
 def add_discounts():
     discounts = request.files.get('discounts')
