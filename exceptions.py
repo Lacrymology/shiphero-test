@@ -1,5 +1,5 @@
 class HttpError(Exception):
-    status_code=400
+    status_code = 400
 
     def __init__(self, message='Bad Request', code=None, payload=None):
         super(Exception, self).__init__()
@@ -15,4 +15,8 @@ class HttpError(Exception):
 
 
 class NotFoundError(HttpError):
-    status_code=404
+    status_code = 404
+
+
+class ForbiddenError(HttpError):
+    status_code = 403
