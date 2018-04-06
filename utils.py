@@ -10,3 +10,5 @@ def authenticate(func):
         from models import User
         request.user = User.get_dummy()
         return func(*args, **kwargs)
+
+    return wrapper

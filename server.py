@@ -12,8 +12,8 @@ from utils import authenticate
 #  also define a set of Exception subclasses to be handled as HTTP error
 #  status responses
 
-@authenticate
 @app.route('/discounts/add', methods=['POST'])
+@authenticate
 def add_discounts():
     discounts = request.files.get('discounts')
     if not discounts or not discounts.filename:

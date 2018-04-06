@@ -20,7 +20,7 @@ class User(db.Model):
         if user is None:
             user = User(id=0)
             db.session.add(user)
-            db.commit()
+            db.session.commit()
         return user
 
 
