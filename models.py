@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
 from app import app
-from exceptions import NotFoundError
+from exceptions import NotFoundError, ForbiddenError
 
 db = SQLAlchemy(app)
 
@@ -81,6 +81,11 @@ class Promotion(db.Model):
                                   price=promotion['price'])
                 db.session.add(product)
                 products[product.id] = product
+
+            if product.user_id != user.id:
+                raise ForbiddenError('Forbidden', payload={
+                    'error': 'User cannot create discounts for these products.'
+                })
 
             promotion_obj = cls(**promotion)
             ret.append(promotion_obj)
