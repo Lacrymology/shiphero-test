@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
-from .app import app
-from .exceptions import NotFoundError
+from app import app
+from exceptions import NotFoundError
 
 db = SQLAlchemy(app)
 
