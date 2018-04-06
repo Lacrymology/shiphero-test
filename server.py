@@ -1,5 +1,6 @@
 from flask import request, jsonify
 
+from exceptions import HttpError
 from app import app
 from inputs import parse
 from models import Product, Promotion
@@ -14,9 +15,11 @@ from models import Product, Promotion
 def add_discounts():
     discounts = request.files.get('discounts')
     if not discounts or not discounts.filename:
-        response = jsonify({'errors': {'discounts': 'this field is required',}})
-        response.status_code = 400
-        return response
+        raise HttpError('Missing field', 400, {
+            'errors': {
+                'discounts': 'this field is required',
+            },
+        })
 
     discounts_json = parse(discounts)
 
