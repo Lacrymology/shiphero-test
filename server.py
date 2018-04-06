@@ -23,7 +23,14 @@ def add_discounts():
 
     discounts_json = parse(discounts)
 
-    return jsonify(discounts_json)
+    # for production, create_products should probably be 'false'. I set it
+    #  as a facility to automatically create missing products
+    promotions = Promotion.from_json(discounts_json, create_products=True)
+    promotions_json = list(map(serialize_promotion, promotions))
+
+    response = jsonify(promotions_json)
+    response.status_code = 201
+    return response
 
 
 def serialize_promotion(promotion):
