@@ -27,7 +27,8 @@ def add_discounts():
 
     # for production, create_products should probably be 'false'. I set it
     #  as a facility to automatically create missing products
-    promotions = Promotion.from_json(discounts_json, create_products=True)
+    promotions = Promotion.from_json(discounts_json, request.user,
+                                     create_products=True)
     promotions_json = list(map(serialize_promotion, promotions))
 
     response = jsonify(promotions_json)

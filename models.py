@@ -55,7 +55,7 @@ class Promotion(db.Model):
     shipping_discount = db.Column(db.Float, nullable=False)
 
     @classmethod
-    def from_json(cls, promotion_json, create_products=False):
+    def from_json(cls, promotion_json, user, create_products=False):
         product_ids = set(map(lambda prom: prom.get('product_id'),
                               promotion_json))
         products = {
@@ -75,6 +75,7 @@ class Promotion(db.Model):
                         payload={'id': product_id})
 
                 product = Product(id=product_id,
+                                  user_id=user.id,
                                   name=promotion['product_name'],
                                   description=promotion['product_description'],
                                   price=promotion['price'])
