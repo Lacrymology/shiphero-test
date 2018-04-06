@@ -45,6 +45,15 @@ class Promotion(db.Model):
         for promotion in promotion_json:
             product = products.get(promotion['product_id'])
             if not product:
+                product_id = promotion['product_id']
                 if not create_products:
-                    raise NotFoundError('Product {} not found'.format(
-                        promotion['product_id']))
+                    raise NotFoundError(
+                        'Product {} not found'.format(product_id),
+                        payload={'id': product_id})
+
+                product = Product(id=product_id,
+                                  name=promotion['product_name'],
+                                  description=promotion['product_description'],
+                                  price=promotion['price'])
+                db.session.add(product)
+                products[product.id] = product
