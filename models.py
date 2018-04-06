@@ -29,6 +29,8 @@ class Product(db.Model):
     Skeleton Product model to be used in the Promotion relation
     """
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('products', lazy=True))
 
     name = db.Column(db.String(128), nullable=False)
     description = db.Column(db.Text, nullable=False)
@@ -41,7 +43,7 @@ class Promotion(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'),
                            nullable=False)
     product = db.relationship('Product',
-                              backref=db.backref('discounts', lazy=False))
+                              backref=db.backref('discounts', lazy=True))
 
     # I understand that name, description and price are optional and will
     # default to self.product.(name,description,price) respectively
