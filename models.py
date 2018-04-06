@@ -42,6 +42,8 @@ class Promotion(db.Model):
             for p in Product.query.filter(Product.id.in_(product_ids))
         }
 
+        ret = []
+
         for promotion in promotion_json:
             product = products.get(promotion['product_id'])
             if not product:
@@ -57,3 +59,12 @@ class Promotion(db.Model):
                                   price=promotion['price'])
                 db.session.add(product)
                 products[product.id] = product
+
+            promotion_obj = cls(**promotion)
+            ret.append(promotion_obj)
+
+        if ret:
+            db.session.add_all(ret)
+            db.session.commit()
+
+        return ret
