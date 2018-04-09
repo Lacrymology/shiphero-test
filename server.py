@@ -36,6 +36,18 @@ def add_promotions():
     return response
 
 
+@app.route('/promotions', methods=['GET'])
+@authenticate
+def list_promotions():
+    """
+    Returns the user's promotions
+    """
+    promotions = Promotion.query.join(Product).filter(
+        Product.user==request.user)
+    promotions_dict = list(map(serialize_promotion, promotions))
+    return jsonify(promotions_dict)
+
+
 def serialize_promotion(promotion):
     """
     Turns a Promotion object into a dict for jsonification
