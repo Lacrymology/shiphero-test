@@ -12,26 +12,26 @@ from utils import authenticate
 #  also define a set of Exception subclasses to be handled as HTTP error
 #  status responses
 
-@app.route('/discounts/add', methods=['POST'])
+@app.route('/promotions/add', methods=['POST'])
 @authenticate
-def add_discounts():
-    discounts = request.files.get('discounts')
-    if not discounts or not discounts.filename:
+def add_promotions():
+    promotions_file = request.files.get('promotions')
+    if not promotions_file or not promotions_file.filename:
         raise HttpError('Missing field', 400, {
             'errors': {
                 'discounts': 'this field is required',
             },
         })
 
-    discounts_json = parse(discounts)
+    promotions_parsed = parse(promotions_file)
 
     # for production, create_products should probably be 'false'. I set it
     #  as a facility to automatically create missing products
-    promotions = Promotion.from_json(discounts_json, request.user,
+    promotions = Promotion.from_file(promotions_parsed, request.user,
                                      create_products=True)
-    promotions_json = list(map(serialize_promotion, promotions))
+    promotions_dict = list(map(serialize_promotion, promotions))
 
-    response = jsonify(promotions_json)
+    response = jsonify(promotions_dict)
     response.status_code = 201
     return response
 
