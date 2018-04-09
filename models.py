@@ -87,6 +87,11 @@ class Promotion(db.Model):
                     'error': 'User cannot create discounts for these products.'
                 })
 
+            for attr, pattr in [('product_name', 'name'),
+                                ('product_description', 'description'),
+                                ('price', 'price')]:
+                promotion.setdefault(attr, getattr(product, pattr))
+
             promotion_obj = cls(**promotion)
             ret.append(promotion_obj)
 
