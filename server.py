@@ -23,6 +23,9 @@ from utils import authenticate
 #  functions, and since I'm designing this as a REST API, I'd have some helpers
 #  to automatize calls to jsonify and setting status codes and such.
 
+# NOTE: I'd expect the application to be structured in packages, I just dropped
+#  everything on the project root for ease of navigation
+
 @app.route('/promotions/add', methods=['POST'])
 @authenticate
 def add_promotions():
