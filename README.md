@@ -21,7 +21,7 @@ We already have some parsers for json, csv and excel files, so what we need righ
  c) Design another endpoint to query/list the promotions uploaded by the user
 
 
-##Notes:
+## Notes:
 
 - More input sources can be added in the future so the design needs to be flexible enough to handle that
 - No need to worry about authentication
