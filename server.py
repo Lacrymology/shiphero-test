@@ -6,11 +6,22 @@ from inputs import parse
 from models import Product, Promotion
 from utils import authenticate
 
+# I assumed that since the discounts input came with the product name,
+# description and price, these may represent a change in those fields which is
+# only valid for the time the discount is up. For simplicity, when the
+# Promotion object is created, these fields are loaded from the product
+# object, but I understand this may not be the best pattern depending on the
+# use-case, because any later changes on the product would not be reflected.
+# Overriding empty fields in the Promotion object with their Product
+# counterpart if they're empty on the view/serializing function would be
+# a better approach. I'd need to understand the reason behind these fields
+# being sent in the promotion datasheets better to decide whether the best
+# course of action would be overriding the Product fields with them, rather
+# than this redundancy.
+
 # NOTE: generally, I'd rather lean towards using class-based views rather than
 #  functions, and since I'm designing this as a REST API, I'd have some helpers
-#  to automatize calls to jsonify and setting status codes and such, and I'd
-#  also define a set of Exception subclasses to be handled as HTTP error
-#  status responses
+#  to automatize calls to jsonify and setting status codes and such.
 
 @app.route('/promotions/add', methods=['POST'])
 @authenticate
